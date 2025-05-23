@@ -1,0 +1,1 @@
+export * from './app.schema'; // app.schema.ts 파일에서 모든 것을

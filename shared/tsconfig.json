@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext", // ✨ 다른 워크스페이스와 통일 (CommonJS에서 변경)
+    // 만약 특정 이유로 CommonJS가 필요하다면 유지하되,
+    // 모노레포 내 다른 ESNext 모듈과의 호환성 고려 필요
+    "moduleResolution": "bundler", // 또는 "node16", "nodenext"
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "composite": true, // ✨ 프로젝트 참조를 위해 필요
+    "declaration": true, // ✨ 타입 정의 파일 생성 (package.json의 types 필드와 연동)
+    "outDir": "./dist", // ✨ 컴파일 결과 출력 디렉토리
+    "rootDir": "./src", // ✨ 소스 루트 디렉토리
+    "baseUrl": "." // 경로 별칭 기준 디렉토리
+    // "paths": {} // 보통 shared는 다른 곳을 참조하지 않음
+  },
+  // "references": [], // shared는 보통 다른 워크스페이스를 참조하지 않음
+  "include": [
+    "src/**/*.ts" // src 폴더 내의 모든 .ts 파일
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

@@ -1,0 +1,71 @@
+{
+  "compilerOptions": {
+    // --- 기본 컴파일 옵션 ---
+    "target": "ESNext",
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "allowJs": false,
+    // --- Vite 및 React 관련 권장 옵션 ---
+    "useDefineForClassFields": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    // --- 모듈 및 타입 시스템 강화 옵션 ---
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    // --- 프로젝트 참조 및 빌드 관련 옵션 ---
+    "composite": true,
+    "declaration": true,
+    "declarationDir": "./dist-types",
+    "emitDeclarationOnly": true,
+    "rootDir": ".",
+    // --- 경로 별칭 ---
+    "baseUrl": ".", // paths 옵션의 기준 디렉토리
+    "paths": {
+      "@src/*": [
+        "./src/*"
+      ],
+      "@src2/*": [
+        "./src2/*"
+      ],
+      "@shared/*": [
+        "../shared/src/*"
+      ]
+    }
+  },
+  "references": [ // 이 프로젝트가 의존하는 다른 워크스페이스
+    {
+      "path": "../shared"
+    },
+    {
+      "path": "../server"
+    } // client가 server의 타입을 사용하는 경우
+  ],
+  "include": [ // 컴파일 및 타입 체크 대상 파일/폴더
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/vite-env.d.ts",
+    "vite.config.ts" // 이제 rootDir 범위 내에 포함됩니다.
+    ,
+    "src2/**/*.ts", // src2 내부의 모든 .ts 파일 포함
+    "src2/**/*.tsx"
+  ],
+  "exclude": [ // 컴파일 및 타입 체크 제외 대상
+    "node_modules",
+    "dist", // Vite 빌드 결과물 폴더
+    "dist-types", // tsc 타입 정의 출력 폴더
+    "eslint.config.js" // ESLint 설정 파일
+    // client/tsconfig.app.json, client/tsconfig.node.json (만약 사용하지 않는다면)
+  ]
+}

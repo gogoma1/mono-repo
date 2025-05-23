@@ -1,0 +1,448 @@
+/* File: monorepo/client/src/pages/StudentsPage.css */
+.students-page {
+    padding: 20px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.page-header h1 {
+    font-size: 1.8em;
+    /* 이전 1.8em 유지 또는 2em으로 조정 */
+    font-weight: 600;
+    margin: 0;
+    color: #2c3e50;
+    /* 좀 더 부드러운 검정 */
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+    /* 버튼 간 간격 조정 */
+}
+
+/* 공통 버튼 스타일 (기본, 아이콘+텍스트, 아이콘만) */
+.button-base {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    /* 부드러운 모서리 */
+    font-size: 0.95em;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.15s ease-in-out;
+    text-decoration: none;
+    /* 링크 스타일 제거 */
+    white-space: nowrap;
+    /* 버튼 내 텍스트 줄바꿈 방지 */
+}
+
+.button-base:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.button-base:focus-visible {
+    /* 접근성 향상 */
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+.button-icon-text {
+    /* 아이콘 + 텍스트 버튼 */
+    gap: 8px;
+}
+
+.button-icon-text svg {
+    flex-shrink: 0;
+    /* 아이콘 크기 고정 */
+}
+
+.button-icon {
+    /* 아이콘만 있는 버튼 */
+    padding: 8px;
+    /* 정사각형 모양을 위해 패딩 동일하게 */
+}
+
+/* 버튼 색상 변형 */
+.button-primary {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.button-primary:hover:not(:disabled) {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.button-secondary {
+    background-color: #6c757d;
+    color: white;
+    border-color: #6c757d;
+}
+
+.button-secondary:hover:not(:disabled) {
+    background-color: #545b62;
+    border-color: #545b62;
+}
+
+.button-success {
+    background-color: #28a745;
+    color: white;
+    border-color: #28a745;
+}
+
+.button-success:hover:not(:disabled) {
+    background-color: #1e7e34;
+    border-color: #1e7e34;
+}
+
+.button-danger {
+    background-color: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
+
+.button-danger:hover:not(:disabled) {
+    background-color: #b02a37;
+    border-color: #b02a37;
+}
+
+.button-outline-primary {
+    background-color: white;
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.button-outline-primary:hover:not(:disabled) {
+    background-color: #e7f3ff;
+}
+
+
+/* 컬럼 설정 UI */
+.column-settings {
+    background-color: #f8f9fa;
+    padding: 15px 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.column-settings h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #343a40;
+}
+
+.column-toggle-list {
+    display: grid;
+    /* 그리드 레이아웃 사용 */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    /* 반응형 컬럼 */
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.column-toggle-item {
+    display: flex;
+    /* 내부 아이템 정렬 */
+    align-items: center;
+    gap: 8px;
+    /* 체크박스와 텍스트 사이 간격 */
+    padding: 8px 12px;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.column-toggle-item:hover {
+    border-color: #adb5bd;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .1);
+}
+
+.column-toggle-item input[type="checkbox"] {
+    margin-right: 5px;
+    /* 간격 조정 */
+    width: 16px;
+    /* 크기 명시 */
+    height: 16px;
+    accent-color: #007bff;
+    /* 체크박스 색상 */
+}
+
+.button-small {
+    /* 작은 버튼 스타일 */
+    padding: 6px 12px;
+    font-size: 0.85em;
+}
+
+
+/* 검색 및 필터 컨트롤 UI */
+.controls-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+    /* 컨트롤 그룹 간 간격 */
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.search-filter-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    /* 각 컨트롤 요소 간 간격 */
+    align-items: center;
+    flex-grow: 1;
+    /* 가능한 많은 공간 차지 */
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    /* 아이콘 위치 조정 */
+    color: #adb5bd;
+    /* 아이콘 색상 */
+    pointer-events: none;
+    /* 아이콘 클릭 방지 */
+}
+
+.search-input {
+    padding: 9px 12px 9px 40px;
+    /* 아이콘 공간 확보 및 패딩 조정 */
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    min-width: 220px;
+    /* 최소 너비 */
+    font-size: 0.95em;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.search-input:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
+}
+
+.search-filter-box select,
+.search-filter-box .button-icon-text {
+    padding: 9px 12px;
+    /* 버튼 및 셀렉트 패딩 통일 */
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 0.95em;
+    height: calc(1.5em + .75rem + 2px + 2px);
+    /* 대략적인 input 높이와 맞춤 */
+    background-color: #fff;
+    /* 셀렉트 배경색 명시 */
+}
+
+.search-filter-box select {
+    min-width: 130px;
+    /* 셀렉트 최소 너비 */
+}
+
+.search-filter-box .button-icon-text {
+    /* 필터 초기화 버튼 등 */
+    background-color: #f8f9fa;
+    color: #495057;
+    border-color: #ced4da;
+}
+
+.search-filter-box .button-icon-text:hover {
+    background-color: #e9ecef;
+}
+
+
+/* 일괄 작업 버튼 UI */
+.batch-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    /* 버튼들 수직 정렬 */
+    flex-shrink: 0;
+    /* 줄어들지 않도록 */
+}
+
+/* batch-actions 내 버튼들은 .button-base, .button-icon-text 등 공통 스타일 사용 */
+
+
+/* 학생 수 정보 */
+.total-count {
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    color: #495057;
+    /* 이전 #555보다 약간 밝게 */
+    text-align: right;
+    /* 오른쪽 정렬 */
+}
+
+/* 로딩 및 에러 메시지 */
+.loading-message,
+.error-message {
+    padding: 20px;
+    font-size: 1.05em;
+    /* 약간 크게 */
+    text-align: center;
+}
+
+.error-message {
+    color: #721c24;
+    /* 부트스트랩 danger 색상 계열 */
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+}
+
+.centered-message {
+    /* 로딩/에러 메시지를 화면 중앙에 (선택 사항) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+
+/* 모달 (학생 추가/수정 폼) 스타일 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* 더 어둡게 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050;
+    /* 부트스트랩 모달 z-index 참고 */
+    padding: 15px;
+    /* 작은 화면에서 여백 */
+    overflow-y: auto;
+    /* 내용 길어질 시 스크롤 */
+}
+
+.modal-content {
+    background-color: white;
+    padding: 25px 30px;
+    /* 패딩 증가 */
+    border-radius: 8px;
+    /* 모서리 더 둥글게 */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    /* 기본 너비 */
+    max-width: 700px;
+    /* 최대 너비 */
+    max-height: 90vh;
+    /* 최대 높이 (뷰포트 기준) */
+    overflow-y: auto;
+    /* 모달 내부 스크롤 (필요시) */
+    animation: modal-fade-in 0.3s ease-out;
+    /* 부드러운 등장 애니메이션 */
+}
+
+@keyframes modal-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .header-actions {
+        width: 100%;
+        /* 모바일에서 버튼 너비 전체 차지 */
+        justify-content: space-between;
+        /* 버튼 양쪽 정렬 */
+    }
+
+    .header-actions .button-icon-text,
+    .header-actions .button-icon {
+        flex-grow: 1;
+        /* 버튼들이 공간을 나눠 가짐 (선택 사항) */
+        text-align: center;
+    }
+
+    .controls-container {
+        flex-direction: column;
+        align-items: stretch;
+        /* 컨트롤 그룹 수직으로 꽉 차게 */
+    }
+
+    .search-filter-box {
+        flex-direction: column;
+        /* 필터 요소들 수직 정렬 */
+        align-items: stretch;
+    }
+
+    .search-filter-box .search-input,
+    .search-filter-box select {
+        min-width: 0;
+        /* 모바일에서 최소 너비 제한 해제 */
+        width: 100%;
+        /* 너비 전체 차지 */
+    }
+
+    .batch-actions {
+        justify-content: space-around;
+        /* 모바일에서 일괄 작업 버튼 정렬 */
+        width: 100%;
+    }
+
+    .batch-actions .button-icon-text {
+        flex-grow: 1;
+    }
+
+    .total-count {
+        text-align: left;
+        /* 모바일에서 학생 수 왼쪽 정렬 */
+        margin-top: 10px;
+    }
+
+    .column-toggle-list {
+        grid-template-columns: 1fr;
+        /* 모바일에서 컬럼 설정 한 줄에 하나씩 */
+    }
+}

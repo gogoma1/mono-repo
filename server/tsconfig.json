@@ -1,0 +1,46 @@
+// file: monorepo/server/tsconfig.json
+{
+  "compilerOptions": {
+    // --- 기본 컴파일 옵션 ---
+    "target": "ESNext", // 최신 JavaScript 기능 타겟
+    "module": "ESNext", // ES 모듈 시스템 사용 (Bun/Node.js 최신 환경 권장)
+    "moduleResolution": "bundler", // 최신 모듈 해석 방식 (또는 "node16", "nodenext")
+    // --- 모듈 및 타입 시스템 강화 옵션 ---
+    "esModuleInterop": true, // CommonJS 모듈과의 호환성 향상
+    "forceConsistentCasingInFileNames": true, // 파일 이름 대소문자 일관성 강제
+    "strict": true, // 모든 엄격한 타입 검사 옵션 활성화
+    "skipLibCheck": true, // 라이브러리(.d.ts) 파일 타입 검사 건너뛰기
+    // --- 프로젝트 참조 및 빌드 관련 옵션 ---
+    "composite": true, // 이 프로젝트가 다른 프로젝트에 의해 참조될 수 있도록 설정
+    "declaration": true, // 타입 정의 파일(.d.ts) 생성 (package.json의 types 필드와 연동)
+    "outDir": "./dist", // 컴파일 결과(.js, .d.ts) 출력 디렉토리
+    "rootDir": "./src", // TypeScript 소스 파일의 루트 디렉토리
+    // --- 데코레이터 관련 옵션 (사용하지 않는 것으로 가정) ---
+    // "experimentalDecorators": true, // 데코레이터 구문 사용 시 필요 (현재 주석 처리)
+    // "emitDecoratorMetadata": true, // 데코레이터 메타데이터 방출 (현재 주석 처리/제거됨)
+    // --- 경로 별칭 (필요시 설정) ---
+    "baseUrl": ".", // 경로 별칭의 기준 디렉토리
+    "paths": {
+      // "shared/*": ["../shared/src/*"] // 워크스페이스 참조로 대체 가능
+    },
+    // --- 전역 타입 (필요시 추가) ---
+    "types": [
+      "@cloudflare/workers-types",
+      "bun-types"
+    ]
+  },
+  "references": [ // 이 프로젝트가 의존하는 다른 워크스페이스 명시
+    {
+      "path": "../shared"
+    }
+  ],
+  "include": [ // 컴파일 대상에 포함할 파일/폴더 패턴
+    "src/**/*.ts",
+    "../worker-configuration.d.ts" // Worker 설정 파일 (tsc 컴파일 필요 시)
+  ],
+  "exclude": [ // 컴파일 대상에서 제외할 파일/폴더 패턴
+    "node_modules",
+    "dist",
+    "drizzle.config.ts" // Drizzle 설정 파일 (tsc 컴파일 불필요 시)
+  ]
+}

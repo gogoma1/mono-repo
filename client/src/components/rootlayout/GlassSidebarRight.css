@@ -1,0 +1,243 @@
+/* filepath: c:\Users\nicew\Desktop\fullstack\monorepo\client\src\components\rootlayout\GlassSidebarRight.css */
+.glass-sidebar-right {
+    width: var(--sidebar-right-width);
+    height: 100%;
+    padding: 15px 0;
+    box-sizing: border-box;
+    background: var(--sidebar-glass-bg);
+    backdrop-filter: var(--glass-blur-effect);
+    -webkit-backdrop-filter: var(--glass-blur-effect);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 90;
+    flex-shrink: 0;
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), padding 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.glass-sidebar-right.expanded {
+    width: var(--sidebar-right-expanded-width);
+    align-items: flex-start;
+    padding: 15px;
+}
+
+/* ... (기존 데스크탑 스타일 유지) ... */
+.sidebar-right-nav.rgs-nav {
+    width: 100%;
+    display: flex;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.glass-sidebar-right:not(.expanded) .sidebar-right-nav.rgs-nav {
+    justify-content: center;
+    padding: 0 5px;
+}
+
+.glass-sidebar-right.expanded .sidebar-right-nav.rgs-nav {
+    justify-content: flex-start;
+    margin-bottom: 18px;
+}
+
+.sidebar-right-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-toggle-button {
+    background: transparent;
+    border: none;
+    color: var(--icon-color);
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    transition: background-color 0.15s ease-out, color 0.15s ease-out;
+    outline: none;
+}
+
+.settings-toggle-button:hover {
+    background-color: var(--menu-item-hover-bg);
+    color: var(--icon-active-color);
+}
+
+.settings-toggle-button:focus-visible {
+    box-shadow: 0 0 0 2px rgba(var(--accent-color-rgb), 0.5);
+}
+
+.expanded-content-area.rgs-content {
+    flex-grow: 1;
+    width: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.12) transparent;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: fadeInContentRight 0.3s 0.05s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.glass-sidebar-right:not(.expanded) .expanded-content-area.rgs-content {
+    display: none;
+}
+
+@keyframes fadeInContentRight {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.expanded-content-area.rgs-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.expanded-content-area.rgs-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.expanded-content-area.rgs-content::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 3px;
+}
+
+.expanded-content-area.rgs-content::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.sidebar-right-content-placeholder {
+    color: var(--text-secondary);
+}
+
+.sidebar-right-content-placeholder .content-title {
+    color: var(--text-primary);
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1.05em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sidebar-right-content-placeholder .content-description {
+    font-size: 0.88em;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    color: var(--text-placeholder);
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 6px;
+    font-size: 0.92em;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.15s ease-out, color 0.15s ease-out;
+    margin-bottom: 4px;
+    color: var(--text-secondary);
+}
+
+.setting-item:hover {
+    background-color: var(--menu-item-hover-bg);
+    color: var(--text-primary);
+}
+
+.setting-item-icon {
+    margin-right: 12px;
+    color: var(--icon-color);
+    display: inline-flex;
+    align-items: center;
+}
+
+.setting-item:hover .setting-item-icon {
+    color: var(--icon-active-color);
+}
+
+/* 모바일 닫기 버튼 (공통 스타일로 분리 가능) */
+.sidebar-close-button.mobile-only {
+    /* GlassSidebar.css와 동일 */
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.15s ease-out;
+}
+
+.sidebar-close-button.mobile-only:hover {
+    background-color: var(--menu-item-hover-bg);
+}
+
+@media (max-width: 768px) {
+
+    /* .mobile-sidebar 클래스는 App.css에서 공통 레이아웃을 제공 */
+    .glass-sidebar-right.mobile-sidebar.right-mobile-sidebar {
+        /* App.css의 .mobile-sidebar 스타일 상속 */
+        width: var(--mobile-sidebar-width-ratio);
+        max-width: var(--mobile-sidebar-max-width);
+        background: var(--mobile-sidebar-glass-bg);
+        backdrop-filter: var(--glass-blur-effect);
+        -webkit-backdrop-filter: var(--glass-blur-effect);
+        border-top-left-radius: 16px;
+        border-bottom-left-radius: 16px;
+        padding: 20px;
+        /* 내부 패딩 */
+
+        right: 0;
+        left: auto;
+        /* left-mobile-sidebar와 충돌 방지 */
+        transform: translateX(100%);
+        /* 초기 상태: 오른쪽 화면 바깥 */
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+            opacity 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .glass-sidebar-right.mobile-sidebar.right-mobile-sidebar.open {
+        transform: translateX(0);
+        /* 열린 상태: 제자리 */
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .glass-sidebar-right.mobile-sidebar .sidebar-header.rgs-mobile-header {
+        width: 100%;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: flex-start;
+        /* 닫기 버튼이 왼쪽에 오도록 (일반적) 또는 flex-end */
+        align-items: center;
+        min-height: 40px;
+    }
+
+    .sidebar-close-button.mobile-only.rgs-close-btn {
+        display: flex;
+        /* 모바일에서 닫기 버튼 표시 */
+    }
+
+    .glass-sidebar-right.mobile-sidebar .sidebar-right-nav.rgs-nav {
+        display: none;
+        /* 모바일에서는 데스크탑/태블릿의 설정 토글 버튼 영역 숨김 */
+    }
+
+    .glass-sidebar-right.mobile-sidebar .expanded-content-area.rgs-content {
+        opacity: 1;
+        /* 모바일에서는 열리면 항상 내용 보임 */
+        transform: none;
+        /* 데스크탑/태블릿 애니메이션 제거 */
+        animation: none;
+        /* 데스크탑/태블릿 애니메이션 제거 */
+        padding-top: 0;
+        /* 불필요한 패딩 제거 */
+    }
+}

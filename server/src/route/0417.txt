@@ -1,0 +1,115 @@
+// 파일 위치: backend-api-kit/src/route/r2imageupload.ts
+
+import { Hono } from 'hono';
+import { uuidv7 } from 'uuidv7'; // 파일 이름 고유성 보장을 위해 UUID 사용
+import type { User } from '../db/schema'; // --- User 타입 import (경로 확인!) ---
+// Session 타입은 직접 사용하지 않으므로 주석 처리 (필요시 활성화)
+// import type { Session } from '../db/schema';
+
+// Hono 앱 타입 정의:
+// Bindings: auth.ts의 Env 타입을 사용하여 필요한 모든 환경 변수 포함 가정
+// Variables: authMiddleware가 설정하는 user 변수 정의
+const app = new Hono<{
+    Bindings: Env; // auth.ts와 동일한 Env 사용 (R2 변수 포함 가정)
+    Variables: {
+        user?: User; // authMiddleware가 설정할 사용자 정보 (선택적 타입으로 지정)
+        // session?: Session; // 필요 시 session 타입도 추가 가능
+    };
+}>();
+
+export const r2ImageUploadRoute = app
+    // --- 모든 r2ImageUploadRoute 경로에 인증 미들웨어 적용 ---
+
+    // POST /upload/r2 - 이미지 파일을 R2에 업로드 (인증 필요)
+    .post('/upload/r2', async (c) => {
+        // --- 인증 미들웨어를 통해 설정된 사용자 정보 확인 ---
+        const user = c.get("user");
+        if (!user) {
+            // authMiddleware가 사용자를 설정하지 못했거나,
+            // 미들웨어 자체에서 401을 반환하지 않은 경우를 대비한 최종 방어선
+            return c.json({ error: "인증되지 않은 사용자입니다." }, 401);
+        }
+
+        // R2 버킷 및 공개 URL 환경 변수 확인
+        const bucket = c.env.MY_R2_BUCKET;
+        const publicUrlBase = c.env.R2_PUBLIC_URL_PREVIEW;
+
+        if (!bucket) {
+            console.error('R2 버킷 바인딩(MY_R2_BUCKET)이 설정되지 않았습니다.');
+            return c.json({ error: '서버 설정 오류: R2 버킷을 찾을 수 없습니다.' }, 500);
+        }
+        if (!publicUrlBase) {
+            console.error('R2_PUBLIC_URL 환경 변수가 설정되지 않았습니다.');
+            return c.json({ error: '서버 설정 오류: R2 공개 URL을 찾을 수 없습니다.' }, 500);
+        }
+
+        try {
+            const formData = await c.req.formData();
+            const file = formData.get('file'); // 프론트엔드에서 <input type="file" name="file"> 로 보낸 파일
+
+            // 파일 유효성 검사
+            if (!file) {
+                return c.json({ error: '파일이 요청에 포함되지 않았습니다.' }, 400);
+            }
+            if (!(file instanceof File)) {
+                return c.json({ error: '올바른 파일 형식이 아닙니다.' }, 400);
+            }
+
+            // 파일 크기 제한 (예: 5MB)
+            const maxFileSize = 5 * 1024 * 1024;
+            if (file.size > maxFileSize) {
+                return c.json({ error: `파일 크기는 ${maxFileSize / 1024 / 1024}MB를 초과할 수 없습니다.` }, 413); // 413 Payload Too Large
+            }
+
+            // 파일 타입 제한 (예: 이미지)
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+            if (!allowedTypes.includes(file.type)) {
+                return c.json({ error: '허용되지 않는 이미지 파일 형식입니다. (JPEG, PNG, GIF, WEBP 허용)' }, 415); // 415 Unsupported Media Type
+            }
+
+            // 고유한 파일 키(이름) 생성 (예: uuid + 원본 확장자)
+            const fileExtension = file.name.split('.').pop()?.toLowerCase();
+            if (!fileExtension) {
+                return c.json({ error: '파일 확장자를 확인할 수 없습니다.' }, 400);
+            }
+            const uniqueKey = `${uuidv7()}.${fileExtension}`;
+
+            // R2에 파일 업로드
+            const uploadedObject = await bucket.put(uniqueKey, file.stream(), {
+                httpMetadata: {
+                    contentType: file.type, // Content-Type 설정 (중요!)
+                    // cacheControl: 'public, max-age=31536000' // 필요시 캐시 설정
+                },
+                // --- 인증된 사용자의 ID를 커스텀 메타데이터에 추가 ---
+                customMetadata: { userId: user.id }
+            });
+
+            if (!uploadedObject) {
+                // R2.put()은 성공 시 R2Object를 반환해야 함. null/undefined면 문제 상황.
+                throw new Error('R2 put 작업에서 객체를 반환하지 않았습니다. 업로드 실패 가능성이 있습니다.');
+            }
+
+            console.log(`사용자 ${user.id}가 파일 업로드 성공: ${uniqueKey}, ETag: ${uploadedObject.httpEtag}`);
+
+            // 성공 응답: 업로드된 파일의 공개 URL 반환
+            const separator = publicUrlBase.endsWith('/') ? '' : '/';
+            const fileUrl = `${publicUrlBase}${separator}${uniqueKey}`;
+
+            return c.json({
+                message: '파일 업로드 성공',
+                key: uniqueKey, // R2 객체 키
+                url: fileUrl,   // 공개 접근 URL
+                etag: uploadedObject.httpEtag, // ETag 값
+                size: uploadedObject.size,     // 파일 크기 (Bytes)
+            }, 201); // 201 Created
+
+        } catch (error: unknown) {
+            console.error('파일 업로드 중 오류:', error);
+            const errorMessage = error instanceof Error ? error.message : '알 수 없는 오류';
+            // 실제로는 에러 유형에 따라 더 구체적인 상태 코드 반환 고려
+            return c.json({ error: `파일 업로드 중 오류가 발생했습니다: ${errorMessage}` }, 500);
+        }
+    });
+
+// export default app; // 만약 이 파일이 메인 진입점이면 default export 사용
+// export { r2ImageUploadRoute }; // 다른 파일(예: src/index.ts)에서 import하여 사용
