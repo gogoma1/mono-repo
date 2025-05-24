@@ -4,8 +4,6 @@ import { useStudentDataWithRQ } from '../../src2/entities/student/model/useStude
 // import type { MutationStatus } from '../hooks/useStudentDataWithRQ'; // 직접 사용하지 않으므로 제거 가능
 
 import { useStudentPageStore } from '../stores/studentPageStore';
-import StudentList from '../components/students/StudentList';
-import StudentForm from '../components/students/StudentForm';
 import type {
     StudentZod as Student,
     CreateStudentInput, // createStudentBodySchema에서 추론
@@ -401,36 +399,11 @@ const StudentsPage: React.FC = () => {
 
             {isLoadingStudents && <p className="loading-message centered-message">학생 목록을 불러오는 중...</p>}
 
-            {!isLoadingStudents && (
-                <StudentList
-                    students={filteredStudents}
-                    columns={currentlyVisibleColumns}
-                    isBatchEditMode={isBatchEditMode}
-                    editingRowId={editingRowId}
-                    editedRows={editedRows}
-                    onEditRow={handleEditRow}
-                    onLuSaveSingleEdit={handleSaveSingleEdit}
-                    onCancelSingleEdit={handleCancelSingleEdit}
-                    onInputChange={handleInputChange}
-                    selectedRows={selectedRows}
-                    onToggleRowSelection={handleToggleRowSelection}
-                    onToggleSelectAll={handleToggleSelectAll}
-                    isAllSelected={isAllSelected}
-                    onDischargeStudent={handleDischargeStudent}
-                    onDeleteStudent={handleDeleteStudent}
-                />
-            )}
 
             {isFormOpen && (
                 <div className="modal-overlay" onClick={handleCloseForm} role="dialog" aria-modal="true">
                     <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <StudentForm
-                            initialData={editingFormStudent}
-                            onSubmit={handleSubmitForm}
-                            onCancel={handleCloseForm}
-                            isEditMode={!!editingFormStudent}
-                            isSubmitting={addStudentStatus.isPending || (editingFormStudent ? updateStudentStatus.isPending : false)}
-                        />
+
                     </div>
                 </div>
             )}
